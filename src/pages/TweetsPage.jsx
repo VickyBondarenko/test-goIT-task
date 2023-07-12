@@ -3,8 +3,17 @@
 // import { Link, useLocation } from "react-router-dom";
 // import styled from "styled-components";
 
+import { GoBackButton } from "../components/GoBackButton";
+import TweetCard from "../components/TweetCard";
+
 export function TweetsPage() {
-  return <div>hello Tweets!</div>;
+  return (
+    <>
+      <GoBackButton />
+
+      <TweetCard />
+    </>
+  );
 }
 export default TweetsPage;
 
