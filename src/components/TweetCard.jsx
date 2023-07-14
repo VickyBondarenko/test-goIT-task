@@ -1,14 +1,27 @@
-// import React, { Suspense } from "react";
-// import { Outlet, useLocation, Link } from "react-router-dom";
-// import { NavBar } from "./NavBar";
-import styled from "styled-components";
+import { useState } from "react";
+import PropTypes from "prop-types";
+import { updateUserFollowing } from "../api/tweetsAPI";
+import updateData from "../helpers/updateData";
 import TweetImage from "../assets/img/picture2 1.png";
 import Logo from "../assets/img/Vector.svg";
-import UserAvatar from "../assets/img/IMG_9580s.jpg";
 import AwatarEllipse from "../assets/img/Ellipse 1 (Stroke).svg";
+import styled from "styled-components";
 
-export function TweetCard() {
-  const number = 100501;
+export function TweetCard({ data }) {
+  const { id, user, tweets, followers, avatar, isFollowing } = data;
+  const [countFollowers, setCountFollowers] = useState(followers);
+  const [isUserFollowing, setIsUserFollowing] = useState(isFollowing);
+
+  const handleChange = async () => {
+    const newData = updateData(
+      isUserFollowing,
+      countFollowers,
+      setIsUserFollowing,
+      setCountFollowers
+    );
+    await updateUserFollowing(id, newData);
+  };
+
   return (
     <CardWrapper>
       <div>
@@ -17,27 +30,44 @@ export function TweetCard() {
           <TweetImgContainer src={TweetImage} alt="tweet-image" />
         </ImgContainer>
         <Line>
-          <AwatarWrapper src={AwatarEllipse} alt="user-avatar" />
-          <AwatarImg src={UserAvatar} alt="user-avatar" />
+          <AwatarWrapper src={AwatarEllipse} alt="" />
+          <AwatarImg src={avatar} alt={`${user}-avatar`} />
         </Line>
 
         <ContentContainer>
-          <DataContent> 777 tweets</DataContent>
-          <DataContent>{number.toLocaleString("en-US")} Followers</DataContent>
-          <CardButton type="button" onClick={() => console.log("hello")}>
-            Follow
+          <DataContent> {tweets} tweets</DataContent>
+          <DataContent>
+            {countFollowers.toLocaleString("en-US")} Followers
+          </DataContent>
+          <CardButton
+            type="button"
+            onClick={handleChange}
+            following={isUserFollowing.toString()}
+          >
+            {!isUserFollowing ? "Follow" : "Following"}
           </CardButton>
         </ContentContainer>
       </div>
     </CardWrapper>
   );
 }
+
+TweetCard.propTypes = {
+  data: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    user: PropTypes.string.isRequired,
+    tweets: PropTypes.string.isRequired,
+    followers: PropTypes.number.isRequired,
+    avatar: PropTypes.string.isRequired,
+    isFollowing: PropTypes.bool.isRequired,
+  }).isRequired,
+};
+
 export default TweetCard;
 
 const CardWrapper = styled.div`
   position: relative;
   display: flex;
-
   flex-direction: column;
   align-items: center;
   width: 380px;
@@ -116,7 +146,9 @@ const CardButton = styled.button`
   margin-top: 26px;
   margin-bottom: 36px;
   border-radius: 10.311px;
-  background: #ebd8ff;
+  cursor: pointer;
+  background: ${({ following }) =>
+    following === "true" ? "#5CD3A8" : "#ebd8ff"};
   box-shadow: 0px 3.4369285106658936px 3.4369285106658936px 0px
     rgba(0, 0, 0, 0.25);
   text-align: center;

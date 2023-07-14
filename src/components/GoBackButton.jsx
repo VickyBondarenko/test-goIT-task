@@ -15,16 +15,25 @@ export const GoBackButton = () => {
 };
 
 const Button = styled.button`
-  font-size: 16px;
-  font-weight: bold;
-  padding: 8px 16px;
+  height: 40px;
+
+  padding: 9px 16px;
   color: black;
-  background-color: #d3d3d34c;
-  border-radius: 4px;
+  background-color: #ebd8ff;
+  border-radius: 20px;
+  border: 1px solid #4b2a99;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-transform: uppercase;
 
   &:hover {
-    color: lightcoral;
-    box-shadow: 1px 1px 5px 2px gray;
+    background: #5cd3a8;
+    border-color: transparent;
+    box-shadow: 0px 3.4369285106658936px 3.4369285106658936px 0px
+      rgba(0, 0, 0, 0.25);
     cursor: pointer;
   }
 `;

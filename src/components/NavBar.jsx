@@ -1,4 +1,3 @@
-// import React from "react";
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
@@ -19,7 +18,7 @@ const Header = styled.header`
   align-items: center;
   padding: 20px;
   box-sizing: border-box;
-  box-shadow: 1px 1px 5px 2px gray;
+  box-shadow: 1px 1px 5px 2px #4b2a99;
 `;
 
 const StyledLink = styled(NavLink)`
@@ -31,6 +30,6 @@ const StyledLink = styled(NavLink)`
   color: black;
 
   &.active {
-    color: lightcoral;
+    color: #5736a3;
   }
 `;

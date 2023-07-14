@@ -5,8 +5,6 @@ import { Layout } from "./components/Layout";
 const Home = lazy(() => import("./pages/HomePage"));
 const TweetsPage = lazy(() => import("./pages/TweetsPage"));
 
-import "./App.css";
-
 function App() {
   return (
     <>
