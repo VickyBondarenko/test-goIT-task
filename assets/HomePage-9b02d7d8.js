@@ -1,4 +1,4 @@
-import{j as e,s as t}from"./index-b40d6e51.js";function s(){return e.jsx(o,{children:e.jsx(n,{children:"Welcome to home page !"})})}const o=t.div`
+import{j as e,s as t}from"./index-5f9bcab9.js";function s(){return e.jsx(o,{children:e.jsx(n,{children:"Welcome to home page !"})})}const o=t.div`
   display: flex;
   justify-content: center;
   align-items: center;
