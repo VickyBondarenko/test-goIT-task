@@ -15,12 +15,24 @@ export function TweetsPage() {
   const [totalPage, setTotalPage] = useState(0);
   const [filter, setFilter] = useState("All");
   const [renderData, setRenderData] = useState([...users]);
+  const [following, setFollowing] = useState("");
 
   const ref = useRef(null);
 
   useEffect(() => {
     getTotalPage(3, setTotalPage);
+    const parsedArray = JSON.parse(localStorage.getItem("followings"));
+    console.log("parsedArray", parsedArray);
+    if (!parsedArray) {
+      localStorage.setItem("followings", JSON.stringify([]));
+    } else {
+      setFollowing(parsedArray);
+    }
+    console.log("following", following);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // useEffect(()=>{},[])
 
   useEffect(() => {
     if (users.length > 0) {
@@ -29,21 +41,17 @@ export function TweetsPage() {
           setRenderData([...users]);
           break;
         case "Follow":
-          setRenderData(
-            [...users].filter(({ isFollowing }) => isFollowing === false)
-          );
+          setRenderData([...users].filter(({ id }) => !following.includes(id)));
           break;
         case "Followings":
-          setRenderData(
-            [...users].filter(({ isFollowing }) => isFollowing === true)
-          );
+          setRenderData([...users].filter(({ id }) => following.includes(id)));
           break;
         default:
           console.log("something wrong!");
           break;
       }
     }
-  }, [filter, users]);
+  }, [filter, users, following]);
 
   useEffect(() => {
     const getUsersData = async (page, data) => {
@@ -77,7 +85,12 @@ export function TweetsPage() {
         <Dropdoun setFilter={setFilter} />
       </BtnWrapper>
       <CardListContainer>
-        <TweetCardList id="TweetCardList" users={renderData} />
+        <TweetCardList
+          id="TweetCardList"
+          users={renderData}
+          following={following}
+          setFollowing={setFollowing}
+        />
         {page <= totalPage && <LoadMoreButton onHandleClick={loadMore} />}{" "}
         <Guard ref={ref}></Guard>
       </CardListContainer>

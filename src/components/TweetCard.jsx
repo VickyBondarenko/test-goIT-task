@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { updateUserFollowing } from "../api/tweetsAPI";
 import updateData from "../helpers/updateData";
@@ -7,10 +8,18 @@ import Logo from "../assets/img/Vector.svg";
 import AwatarEllipse from "../assets/img/Ellipse 1 (Stroke).svg";
 import styled from "styled-components";
 
-export function TweetCard({ data }) {
-  const { id, user, tweets, followers, avatar, isFollowing } = data;
+export function TweetCard({ data, following, setFollowing }) {
+  const { id, user, tweets, followers, avatar } = data;
   const [countFollowers, setCountFollowers] = useState(followers);
-  const [isUserFollowing, setIsUserFollowing] = useState(isFollowing);
+  const [isUserFollowing, setIsUserFollowing] = useState("");
+
+  useEffect(() => {
+    if (following.includes(id)) {
+      setIsUserFollowing(true);
+    } else {
+      setIsUserFollowing(false);
+    }
+  }, []);
 
   const handleChange = async () => {
     const newData = updateData(
@@ -20,6 +29,15 @@ export function TweetCard({ data }) {
       setCountFollowers
     );
     await updateUserFollowing(id, newData);
+    let newArray;
+    // const parsedArray = JSON.parse(localStorage.getItem("followings"));
+    if (following.includes(id)) {
+      newArray = following.filter((value) => value !== id);
+    } else {
+      newArray = [...following, id];
+    }
+    localStorage.setItem("followings", JSON.stringify(newArray));
+    setFollowing(newArray);
   };
 
   return (
@@ -53,6 +71,8 @@ export function TweetCard({ data }) {
 }
 
 TweetCard.propTypes = {
+  following: PropTypes.arrayOf(PropTypes.string),
+  setFollowing: PropTypes.func.isRequired,
   data: PropTypes.shape({
     id: PropTypes.string.isRequired,
     user: PropTypes.string.isRequired,

@@ -3,11 +3,19 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 // import { forwardRef } from "react";
 
-const TweetCardList = ({ users }) => {
+const TweetCardList = ({ users, following, setFollowing }) => {
   return (
     <>
       <UserList>
-        {users && users.map((item) => <TweetCard key={item.id} data={item} />)}
+        {users &&
+          users.map((item) => (
+            <TweetCard
+              key={item.id}
+              data={item}
+              following={following}
+              setFollowing={setFollowing}
+            />
+          ))}
       </UserList>
     </>
   );
@@ -15,6 +23,8 @@ const TweetCardList = ({ users }) => {
 TweetCardList.displayName = "TweetCardList";
 
 TweetCardList.propTypes = {
+  following: PropTypes.arrayOf(PropTypes.string),
+  setFollowing: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,
